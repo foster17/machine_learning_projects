@@ -47,10 +47,7 @@ data = data.drop(54,axis=1)
 #print(data.info())
 
 #look at the distribution of my classes
-<<<<<<< HEAD
 
-sns.distplot(y, kde=False, rug=True)
-=======
 #sns.distplot(y, kde=False)
 #plt.show()
 
@@ -76,7 +73,7 @@ y=np.asarray(new_y_list)
 
 #look at the distribution of my classes
 sns.distplot(y, kde=False)
->>>>>>> b06512a84878329434382501bd8874770713a553
+
 plt.show()
 #Note: There is the argument denoting the location from which the samples were taken,  which we might consider to exclude
 #and afterwards apply weights, partucularly to class 4
