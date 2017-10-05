@@ -50,7 +50,7 @@ data=np.asarray(new_data_list)
 y=np.asarray(new_y_list)
 
 #split the data into traing and test
-X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=0.20, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=0.20)
 '''
 kf = KFold(n_splits=10)
 train_accuracy = []
@@ -64,8 +64,8 @@ The max depth appears to have the greater affect on the tree, because it can aff
 we will try cross validation to give us increasing potential max depths and take the best. 
 graphviz could graph this to potentialy provide more information but I can't figure out how to get the modulo.
 '''
-#see how good the test is before I begin messing with parmaeters
-dt = tree.DecisionTreeClassifier()
+#see how good the test is before I begin messing with parmaeters and our weighted data
+dt = tree.DecisionTreeClassifier(class_weight ={4: 2, 5:3, 6:1.5, 7:1.25})
 dt.fit(X_train, y_train)
 print(dt.score(X_train, y_train))
 print(dt.score(X_test, y_test))
@@ -82,8 +82,9 @@ for train, test in kf.split(X_train):
 highest_test = 0
 parameter_depth = 0
 
+''''
 for i in range(1,10):
-    dt = tree.DecisionTreeClassifier(max_depth=(i*5), class_weight ={4: 2})
+    dt = tree.DecisionTreeClassifier(max_depth=(i*5), class_weight ={4: 2, 5:3, 6:1.5, 7:1.25})
     dt.fit(X_train, y_train)
 
     train_acc = dt.score(X_train, y_train)
@@ -93,19 +94,21 @@ for i in range(1,10):
         highest_test = test_acc
         parameter_depth = i*5
 highest_test = 0
-for j in range(1,10):
-    clf = tree.DecisionTreeClassifier(max_depth=parameter_depth, min_impurity_decrease=(j*2) , class_weight={4: 10, 5:8})
+'''
+for j in range(-10,10,0.1):
+    clf = tree.DecisionTreeClassifier(min_impurity_decrease=(j) , class_weight={4: 10, 5:8})
     clf.fit(X_train, y_train)
     train_acc =clf.score(X_train, y_train)
     test_acc = clf.score(X_test, y_test)
     if (test_acc > highest_test):
         highest_test = test_acc
-        parameter_impurity = j * 2
-fclf = tree.DecisionTreeClassifier(max_depth=parameter_depth, min_impurity_decrease=parameter_impurity,
+        parameter_impurity = j
+fclf = tree.DecisionTreeClassifier(min_impurity_decrease=parameter_impurity,
                                   class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
 fclf.fit(X_train, y_train)
 print(fclf.score(X_train, y_train))
 print(fclf.score(X_test, y_test))
+print(parameter_impurity)
 
 '''
 a difference of .1 denotes potential overfitting
