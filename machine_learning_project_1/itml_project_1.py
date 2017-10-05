@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, KFold
 from sklearn import tree
 import random
@@ -95,21 +97,35 @@ for i in range(1,10):
         parameter_depth = i*5
 highest_test = 0
 '''
-for j in range(-10,10,0.1):
-    clf = tree.DecisionTreeClassifier(min_impurity_decrease=(j) , class_weight={4: 10, 5:8})
+test_acc_list = []
+train_acc_list = []
+jten_list = []
+for j in range(0,100):
+    jten = j/1000
+    clf = tree.DecisionTreeClassifier(min_impurity_decrease=jten , class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
     clf.fit(X_train, y_train)
     train_acc =clf.score(X_train, y_train)
     test_acc = clf.score(X_test, y_test)
+    test_acc_list.append(test_acc)
+    train_acc_list.append(train_acc)
+    jten_list.append(jten)
     if (test_acc > highest_test):
         highest_test = test_acc
-        parameter_impurity = j
+        parameter_impurity = jten
 fclf = tree.DecisionTreeClassifier(min_impurity_decrease=parameter_impurity,
                                   class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
 fclf.fit(X_train, y_train)
 print(fclf.score(X_train, y_train))
 print(fclf.score(X_test, y_test))
 print(parameter_impurity)
+#tried range (1,10,1), best result 0.26...
+#tried range (0,20,0.1) best result 0.1/0.68 at 0, all else 0.26
+#tried range (0,0.1,0.001)
 
+plot = sns.stripplot(x=2*jten_list, y=train_acc_list+test_acc_list, hue=100*["Training"]+100*["Test"])
+plt.xlabel("Minimum Impurity Decrease")
+plt.ylabel("Accuracy")
+plt.show()
 '''
 a difference of .1 denotes potential overfitting
 '''
