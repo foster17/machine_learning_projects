@@ -28,10 +28,11 @@ data = data.drop(54,axis=1)
 #print(data.info())
 
 #look at the distribution of my classes
+
 sns.distplot(y, kde=False, rug=True)
 plt.show()
 #why wont it load? thi will help to find out what kind of metrics to use
 
 #look at the distribution of each data set
-#bassed on the distribution we can find the best metric
+#based on the distrbution we can find the best metric 
 
