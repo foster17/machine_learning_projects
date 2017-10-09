@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split, KFold
 from sklearn import tree
 import random
+from sklearn.ensemble import RandomForestClassifier
 
 
 #gets our data set in a usable form
@@ -95,8 +96,9 @@ for i in range(1,10):
         parameter_depth = i*5
 highest_test = 0
 '''
+'''
 for j in range(-10,10,0.1):
-    clf = tree.DecisionTreeClassifier(min_impurity_decrease=(j) , class_weight={4: 10, 5:8})
+    clf = tree.DecisionTreeClassifier(min_impurity_decrease=(j) , class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
     clf.fit(X_train, y_train)
     train_acc =clf.score(X_train, y_train)
     test_acc = clf.score(X_test, y_test)
@@ -109,12 +111,48 @@ fclf.fit(X_train, y_train)
 print(fclf.score(X_train, y_train))
 print(fclf.score(X_test, y_test))
 print(parameter_impurity)
-
 '''
-a difference of .1 denotes potential overfitting
+'''
+all of the hyper parameters ultimetly have something to do with the length of the tree. min_impurity_decrease
+appears to have the most efficient effect. This is because it decides when to stop bassed on a specific value 
+'''
+'''
+this results in an interesting outcome. when we try verying parameter values we instantly drop bellow the 
+orriginal test score. This leads implies to us that it would be better to do the default value but overfitting
+is still present so we need to try other models
 '''
 '''
 dot_data = tree.export_graphviz(clf, out_file=None)
 graph = graphviz.Source(dot_data)
 graph.render("data")
+'''
+'''
+it may be possible to improve our tree using bagging and or boosting. boosting will probably be more expensive 
+so we will do bagging just to get an understanding of these techinique but given more time we would try boosting 
+as well. To do this we will use the random forst program in sklearn
+'''
+'''
+note see what we did before
+'''
+highest_test = 0
+parameter_depth = 0
+for j in range(-10,10,0.1):
+    clf = RandomForestClassifier(n_estimators=10, min_impurity_decrease=(int(j)) , class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
+    clf.fit(X_train, y_train)
+    train_acc =clf.score(X_train, y_train)
+    test_acc = clf.score(X_test, y_test)
+    print(clf.score(X_train, y_train))
+    print(clf.score(X_test, y_test))
+    if (test_acc > highest_test):
+        highest_test = test_acc
+        parameter_impurity = j
+fclf = tree.DecisionTreeClassifier(min_impurity_decrease=parameter_impurity,
+                                  class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
+fclf.fit(X_train, y_train)
+print(fclf.score(X_train, y_train))
+print(fclf.score(X_test, y_test))
+print(parameter_impurity)
+
+'''
+for simplicity sake we will just use 10 estimators but in the future this could be a prameter to mess with too
 '''
