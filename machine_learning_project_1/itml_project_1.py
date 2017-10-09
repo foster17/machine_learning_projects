@@ -98,7 +98,7 @@ for i in range(1,10):
         parameter_depth = i*5
 highest_test = 0
 '''
-<<<<<<< HEAD
+
 '''
 for j in range(-10,10,0.1):
     clf = tree.DecisionTreeClassifier(min_impurity_decrease=(j) , class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
@@ -109,7 +109,7 @@ jten_list = []
 for j in range(0,100):
     jten = j/1000
     clf = tree.DecisionTreeClassifier(min_impurity_decrease=jten , class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
->>>>>>> a96b397db46169caa66cece2c6d329dea659879c
+
     clf.fit(X_train, y_train)
     train_acc =clf.score(X_train, y_train)
     test_acc = clf.score(X_test, y_test)
@@ -125,7 +125,7 @@ fclf.fit(X_train, y_train)
 print(fclf.score(X_train, y_train))
 print(fclf.score(X_test, y_test))
 print(parameter_impurity)
-<<<<<<< HEAD
+
 =======
 #tried range (1,10,1), best result 0.26...
 #tried range (0,20,0.1) best result 0.1/0.68 at 0, all else 0.26
@@ -135,7 +135,7 @@ plot = sns.stripplot(x=2*jten_list, y=train_acc_list+test_acc_list, hue=100*["Tr
 plt.xlabel("Minimum Impurity Decrease")
 plt.ylabel("Accuracy")
 plt.show()
->>>>>>> a96b397db46169caa66cece2c6d329dea659879c
+
 '''
 '''
 all of the hyper parameters ultimetly have something to do with the length of the tree. min_impurity_decrease
