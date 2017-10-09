@@ -3,6 +3,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, KFold
+import graphviz
 from sklearn import tree
 import random
 from sklearn.ensemble import RandomForestClassifier
@@ -119,13 +120,15 @@ for j in range(0,100):
     if (test_acc > highest_test):
         highest_test = test_acc
         parameter_impurity = jten
+'''
+parameter_impurity=0.01
 fclf = tree.DecisionTreeClassifier(min_impurity_decrease=parameter_impurity,
                                   class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
 fclf.fit(X_train, y_train)
 print(fclf.score(X_train, y_train))
 print(fclf.score(X_test, y_test))
 print(parameter_impurity)
-
+'''
 =======
 #tried range (1,10,1), best result 0.26...
 #tried range (0,20,0.1) best result 0.1/0.68 at 0, all else 0.26
@@ -146,11 +149,11 @@ this results in an interesting outcome. when we try verying parameter values we 
 orriginal test score. This leads implies to us that it would be better to do the default value but overfitting
 is still present so we need to try other models
 '''
-'''
-dot_data = tree.export_graphviz(clf, out_file=None)
+
+dot_data = tree.export_graphviz(fclf, out_file=None, max_depth=2, rounded=True, proportion=True)
 graph = graphviz.Source(dot_data)
 graph.render("data")
-'''
+
 '''
 it may be possible to improve our tree using bagging and or boosting. boosting will probably be more expensive 
 so we will do bagging just to get an understanding of these techinique but given more time we would try boosting 
@@ -158,6 +161,7 @@ as well. To do this we will use the random forst program in sklearn
 '''
 '''
 note see what we did before
+'''
 '''
 highest_test = 0
 parameter_depth = 0
@@ -177,7 +181,7 @@ fclf.fit(X_train, y_train)
 print(fclf.score(X_train, y_train))
 print(fclf.score(X_test, y_test))
 print(parameter_impurity)
-
+'''
 '''
 for simplicity sake we will just use 10 estimators but in the future this could be a prameter to mess with too
 '''

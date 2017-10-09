@@ -48,9 +48,10 @@ data = data.drop(54,axis=1)
 
 #look at the distribution of my classes
 
-#sns.distplot(y, kde=False)
+sns.distplot(y, kde=False)
 #plt.show()
-
+plt.xlabel("Class")
+plt.ylabel("# Examples")
 new_data_list=[]
 new_y_list=[]
 
@@ -72,7 +73,7 @@ data=np.asarray(new_data_list)
 y=np.asarray(new_y_list)
 
 #look at the distribution of my classes
-sns.distplot(y, kde=False)
+#sns.distplot(y, kde=False)
 
 plt.show()
 #Note: There is the argument denoting the location from which the samples were taken,  which we might consider to exclude
