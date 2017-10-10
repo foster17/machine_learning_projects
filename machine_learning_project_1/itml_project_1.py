@@ -3,7 +3,6 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, KFold
-import graphviz
 from sklearn import tree
 import random
 from sklearn.ensemble import RandomForestClassifier
@@ -55,55 +54,27 @@ y=np.asarray(new_y_list)
 
 #split the data into traing and test
 X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=0.20)
-'''
-kf = KFold(n_splits=10)
-train_accuracy = []
-test_accuracy = []
-'''
 
 '''
 by creating  decision tre and veiwing the results it will be possible to get a rough estimate of the affects
-each atribute has on makeing the decision and will also alow us to see if this is the best classifier. 
-The max depth appears to have the greater affect on the tree, because it can affect all of the other parameters. 
-we will try cross validation to give us increasing potential max depths and take the best. 
+each atribute has on makeing the decision and will also alow us to see if this is the best classifier.  
 graphviz could graph this to potentialy provide more information but I can't figure out how to get the modulo.
 '''
 #see how good the test is before I begin messing with parmaeters and our weighted data
-dt = tree.DecisionTreeClassifier(class_weight ={4: 2, 5:3, 6:1.5, 7:1.25})
+dt = tree.DecisionTreeClassifier(class_weight ={4: 10, 5:3, 6:1.5, 7:1.25})
 dt.fit(X_train, y_train)
 print(dt.score(X_train, y_train))
 print(dt.score(X_test, y_test))
-#could be more accurate if I can figure out how to get the crossvalidation working
-'''
-for train, test in kf.split(X_train):
-    print("%s , %s" % (train, test))
-    X_cross_train = [X_train[i] for i in train]
-    y_cross_train = [y_train[i] for i in train]
-    X_cross_test = [X_train[i] for i in test]
-    y_cross_test = [y_train[i] for i in test]
-'''
+
 
 highest_test = 0
 parameter_depth = 0
 
-''''
-for i in range(1,10):
-    dt = tree.DecisionTreeClassifier(max_depth=(i*5), class_weight ={4: 2, 5:3, 6:1.5, 7:1.25})
-    dt.fit(X_train, y_train)
 
-    train_acc = dt.score(X_train, y_train)
-    test_acc = dt.score(X_test, y_test)
+#the following is for the determination of the best min_impurity_decrease parameter
 
-    if(test_acc>highest_test):
-        highest_test = test_acc
-        parameter_depth = i*5
-highest_test = 0
-'''
-
-'''
 for j in range(-10,10,0.1):
     clf = tree.DecisionTreeClassifier(min_impurity_decrease=(j) , class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
-=======
 test_acc_list = []
 train_acc_list = []
 jten_list = []
@@ -120,16 +91,13 @@ for j in range(0,100):
     if (test_acc > highest_test):
         highest_test = test_acc
         parameter_impurity = jten
-'''
-parameter_impurity=0.01
 fclf = tree.DecisionTreeClassifier(min_impurity_decrease=parameter_impurity,
                                   class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
 fclf.fit(X_train, y_train)
 print(fclf.score(X_train, y_train))
 print(fclf.score(X_test, y_test))
 print(parameter_impurity)
-'''
-=======
+
 #tried range (1,10,1), best result 0.26...
 #tried range (0,20,0.1) best result 0.1/0.68 at 0, all else 0.26
 #tried range (0,0.1,0.001)
@@ -139,49 +107,6 @@ plt.xlabel("Minimum Impurity Decrease")
 plt.ylabel("Accuracy")
 plt.show()
 
-'''
-'''
-all of the hyper parameters ultimetly have something to do with the length of the tree. min_impurity_decrease
-appears to have the most efficient effect. This is because it decides when to stop bassed on a specific value 
-'''
-'''
-this results in an interesting outcome. when we try verying parameter values we instantly drop bellow the 
-orriginal test score. This leads implies to us that it would be better to do the default value but overfitting
-is still present so we need to try other models
-'''
 
-dot_data = tree.export_graphviz(fclf, out_file=None, max_depth=2, rounded=True, proportion=True)
-graph = graphviz.Source(dot_data)
-graph.render("data")
 
-'''
-it may be possible to improve our tree using bagging and or boosting. boosting will probably be more expensive 
-so we will do bagging just to get an understanding of these techinique but given more time we would try boosting 
-as well. To do this we will use the random forst program in sklearn
-'''
-'''
-note see what we did before
-'''
-'''
-highest_test = 0
-parameter_depth = 0
-for j in range(-10,10,0.1):
-    clf = RandomForestClassifier(n_estimators=10, min_impurity_decrease=(int(j)) , class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
-    clf.fit(X_train, y_train)
-    train_acc =clf.score(X_train, y_train)
-    test_acc = clf.score(X_test, y_test)
-    print(clf.score(X_train, y_train))
-    print(clf.score(X_test, y_test))
-    if (test_acc > highest_test):
-        highest_test = test_acc
-        parameter_impurity = j
-fclf = tree.DecisionTreeClassifier(min_impurity_decrease=parameter_impurity,
-                                  class_weight={4: 10, 5:3, 6:1.5, 7:1.25 })
-fclf.fit(X_train, y_train)
-print(fclf.score(X_train, y_train))
-print(fclf.score(X_test, y_test))
-print(parameter_impurity)
-'''
-'''
-for simplicity sake we will just use 10 estimators but in the future this could be a prameter to mess with too
-'''
+

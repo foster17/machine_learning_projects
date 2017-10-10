@@ -18,22 +18,6 @@ data = pd.read_csv('usable_covtype.txt', header= None, )
 y=np.empty(581012, dtype=int)
 for i in range(0,581012):
     y[i] = data.values[i,54]
-    '''if data.iat[i,54]==1.0:
-        y[i]="Spruce/Fir"
-    if data.iat[i,54]==2.0:
-        y[i]="Lodgepole Pine"
-    if data.iat[i,54]==3.0:
-        y[i]="Ponderosa Pine"
-    if data.iat[i,54]==4.0:
-        y[i]="Cottonwood/Willow"
-    if data.iat[i,54]==5.0:
-        y[i]="Aspen"
-    if data.iat[i,54]==6.0:
-        y[i]="Douglas-Fir"
-    if data.iat[i,54]==7.0:
-        y[i]="Krummholz"'''
-
-
 
 
 #used to test that the operation was sucesful

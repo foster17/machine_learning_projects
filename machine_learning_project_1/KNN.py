@@ -21,20 +21,6 @@ data = pd.read_csv('usable_covtype.txt', header= None, )
 y=np.empty(581012, dtype=int)
 for i in range(0,581012):
     y[i] = data.values[i,54]
-    '''if data.iat[i,54]==1.0:
-        y[i]="Spruce/Fir"
-    if data.iat[i,54]==2.0:
-        y[i]="Lodgepole Pine"
-    if data.iat[i,54]==3.0:
-        y[i]="Ponderosa Pine"
-    if data.iat[i,54]==4.0:
-        y[i]="Cottonwood/Willow"
-    if data.iat[i,54]==5.0:
-        y[i]="Aspen"
-    if data.iat[i,54]==6.0:
-        y[i]="Douglas-Fir"
-    if data.iat[i,54]==7.0:
-        y[i]="Krummholz"'''
 
 
 
@@ -79,7 +65,7 @@ scaler_x = preprocessing.StandardScaler().fit(X_train)
 X_train = scaler_x.transform(X_train)
 X_test = scaler_x.transform(X_test)
 '''
-next we will try knearest neigbore because it should be fairly simple and quick to run and because it is the only 
+next we will try knearest neighber because it should be fairly simple and quick to run and because it is the only 
 one that does not generate a model may give us a unique perspective
 '''
 
@@ -103,6 +89,6 @@ for k in range(1,15):
 print("kNN-Classifier: Highest test accuracy was for k=" + str(k_highest_accuracy) + " :" + str(highest_accuracy))
 
 '''
-due to the cost asociated with running this, which makes sense, it would be too long to run through 15 trials, however
+due to the cost associated with running this, which makes sense, it would be too long to run through 15 trials, however
 after the first 6 it was possible to note a pattern of decreasing k. This means k=3 will be our best value
 '''

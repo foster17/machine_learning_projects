@@ -56,18 +56,17 @@ scaler_x = preprocessing.StandardScaler().fit(X_train)
 X_train = scaler_x.transform(X_train)
 X_test = scaler_x.transform(X_test)
 
-'''
-y=y.reshape((-1,1))
-scaler_y = preprocessing.StandardScaler().fit(y_train)
-y_train = scaler_y.transform(y_train)
-y_test = scaler_y.transform(y_test)
-'''
+
 '''
 the papers using this data set claim the Neural networks have produced the best accuracy so we will test
 to see what they got and then experiment to see how parameters will affect it. 
 We will use multiple layers to improve accuracy. 
 '''
 
+'''
+the following comments are the neural networks we ran with the various parameters changed. If you want to see these ran 
+uncomment and run the program. THese parameters were discussed in section 2.2 of the lab.
+'''
 '''
 #this is a nural network with generic value to give us a base line
 clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
@@ -109,19 +108,7 @@ print(clf.score(X_test, y_test))
 #no change
 '''
 
-'''
-#now lets try messing around with normalization
 
-#this is the basic scale function in sklearn
-#x_trained_scale = preprocessing.scale(X_train)
-#no change
-
-#try min max which is a little more advanced
-min_max_scaler = preprocessing.MinMaxScaler()
-x_trained_scale = min_max_scaler.fit_transform(X_train)
-
-y_trained_scale =min_max_scaler.transform(X_test)
-'''
 '''
 clf = MLPClassifier(solver='sgd', random_state=1, alpha=1e-5, learning_rate='adaptive')
 clf.fit(X_train, y_train)
@@ -154,8 +141,4 @@ print(clf.score(X_train, y_train))
 print(clf.score(X_test, y_test))
 
 
-'''
-we have not been able to get a score better than what we got but apaper using this data set got what we got.
 
-question for lab? do we need to change the data coming into the network
-'''
